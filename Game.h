@@ -1,3 +1,4 @@
+#pragma once
 /*
 Copyright 2018 sbmrgd
 
@@ -16,7 +17,8 @@ Copyright 2018 sbmrgd
 */
 
 #include <Pokitto.h>
-
+#include "entity.h"
+#include "tiles.h"
 enum class GameState
 {
     TitleScreen,
@@ -28,6 +30,7 @@ class Game
 {
     private:
     GameState gamestate;
+    Entity pacman {pacman_pal,pacman_sprite[0]};
     void showTitleScreen()
     {
         Pokitto::Display::println("Title Screen");
@@ -49,6 +52,7 @@ class Game
     {
         Pokitto::Core::begin();
         Pokitto::Core::setFrameRate(255);
+        Pokitto::Display::setSpriteBitmap(0, this->pacman.bitmap, this->pacman.palette,10,20);
     }
     void run()
     {
