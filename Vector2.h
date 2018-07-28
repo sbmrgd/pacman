@@ -15,12 +15,15 @@ Copyright 2018 sbmrgd
    limitations under the License.
 
 */
-#include "Vector2.h"
-
-class Entity
+class Vector2
 {
-    public:
-    const uint16_t* palette; //pointer to main palette of the entity
-    const uint8_t* bitmap; //pointer to current bitmap of the entity
-    Vector2 position; // position vector
+public:
+    // Coordinates
+    int16_t x;
+    int16_t y;
+    void add(Vector2 r)
+    {
+        this->x +=r.x;
+        this->y +=r.y;
+        }
 };
