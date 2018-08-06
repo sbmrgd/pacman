@@ -18,9 +18,10 @@ Copyright 2018 sbmrgd
 
 #include <Pokitto.h>
 #include <vector>
-#include "entity.h"
 #include "tiles.h"
+#include "entity.h"
 #include "Vector2.h"
+#include "KeyboardController.h"
 enum class GameState
 {
     TitleScreen,
@@ -32,22 +33,23 @@ class Game
 {
     private:
     GameState gamestate;
-    Entity letter_P {letters_pal,letters[0]};
-    Entity letter_A {letters_pal,letters[1]};
-    Entity letter_C {letters_pal,letters[2]};
-    Entity letter_M {letters_pal,letters[3]};
-    Entity letter_A2 {letters_pal,letters[1]};
-    Entity letter_N {letters_pal,letters[4]};
-    Entity pacman {pacman_pal,pacman_sprite[1],{20,20}};
+    KeyboardController keyboardcontroller;
+    Entity letter_P {letters_pal,letters[0],Pokitto::Display::getWidth()/2-3*18,Pokitto::Display::getHeight()/2-8+2, keyboardcontroller};
+    Entity letter_A {letters_pal,letters[1],Pokitto::Display::getWidth()/2-2*18,Pokitto::Display::getHeight()/2-8-2, keyboardcontroller};
+    Entity letter_C {letters_pal,letters[2],Pokitto::Display::getWidth()/2-1*18,Pokitto::Display::getHeight()/2-8+2, keyboardcontroller};
+    Entity letter_M {letters_pal,letters[3],Pokitto::Display::getWidth()/2-0*18,Pokitto::Display::getHeight()/2-8-2, keyboardcontroller};
+    Entity letter_A2 {letters_pal,letters[1],Pokitto::Display::getWidth()/2+1*18,Pokitto::Display::getHeight()/2-8+2, keyboardcontroller};
+    Entity letter_N {letters_pal,letters[4],Pokitto::Display::getWidth()/2+2*18,Pokitto::Display::getHeight()/2-8-2, keyboardcontroller};
+    Entity pacman {pacman_pal,pacman_sprite[1],20,20, keyboardcontroller};
     std::vector<Entity> entities;
     void showTitleScreen()
     {
 
-        for(std::size_t index = 0;index<entities.size()-1;++index)
+        for(std::size_t index = 0;index<entities.size();++index)
             {
-                Pokitto::Display::setSpriteBitmap(index,entities[index].bitmap,entities[index].palette,Pokitto::Display::getWidth()/2+(index-3)*18,Pokitto::Display::getHeight()/2-8);
+                Pokitto::Display::setSpriteBitmap(index,entities[index].bitmap,entities[index].palette,entities[index].position.x,entities[index].position.y);
             }
-        Pokitto::Display::setSpriteBitmap(6,entities[6].bitmap,entities[6].palette,entities[6].position.x,entities[6].position.y);
+
     }
     void update()
     {

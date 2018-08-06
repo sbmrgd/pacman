@@ -16,11 +16,38 @@ Copyright 2018 sbmrgd
 
 */
 #include "Vector2.h"
+#include "EntityController.h"
 
 class Entity
 {
-    public:
+private:
+	EntityController * controller; //Controller of the entity
+
+public:
     const uint16_t* palette; //pointer to main palette of the entity
     const uint8_t* bitmap; //pointer to current bitmap of the entity
     Vector2 position; // position vector
+    /*Entity(const uint16_t* palette, const uint8_t* bitmap,uint16_t x, uint16_t y,EntityController & controller)
+		: controller(&controller)
+	{
+	    this->palette = palette;
+	    this->bitmap = bitmap;
+	    this->position.x = x;
+	    this->position.y = y;
+	}*/
+    Entity(const uint16_t* palette, const uint8_t* bitmap,uint16_t x, uint16_t y, EntityController & controller)
+    : palette{palette}, bitmap{bitmap}, position{x,y}, controller(&controller)
+    {
+    }
+	/*EntityController * getController(void) const
+	{
+		return this->controller;
+	}*/
+	/*void update(void)
+	{
+		if(this->controller != nullptr)
+			this->controller->update(*this);
+	}*/
 };
+
+
