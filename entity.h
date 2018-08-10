@@ -20,8 +20,6 @@ Copyright 2018 sbmrgd
 
 class Entity
 {
-private:
-	EntityController * controller; //Controller of the entity
 
 public:
     const uint16_t* palette; //pointer to main palette of the entity
@@ -35,19 +33,23 @@ public:
 	    this->position.x = x;
 	    this->position.y = y;
 	}*/
+private:
+	EntityController * controller; //Controller of the entity
+
+public:
     Entity(const uint16_t* palette, const uint8_t* bitmap,uint16_t x, uint16_t y, EntityController & controller)
     : palette{palette}, bitmap{bitmap}, position{x,y}, controller(&controller)
     {
     }
-	/*EntityController * getController(void) const
+	EntityController * getController(void) const
 	{
 		return this->controller;
-	}*/
-	/*void update(void)
+	}
+	void update(void)
 	{
 		if(this->controller != nullptr)
 			this->controller->update(*this);
-	}*/
+	}
 };
 
 

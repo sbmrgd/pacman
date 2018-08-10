@@ -22,6 +22,7 @@ Copyright 2018 sbmrgd
 #include "entity.h"
 #include "Vector2.h"
 #include "KeyboardController.h"
+#include "LetterControllers.h"
 enum class GameState
 {
     TitleScreen,
@@ -34,12 +35,19 @@ class Game
     private:
     GameState gamestate;
     KeyboardController keyboardcontroller;
-    Entity letter_P {letters_pal,letters[0],Pokitto::Display::getWidth()/2-3*18,Pokitto::Display::getHeight()/2-8+2, keyboardcontroller};
-    Entity letter_A {letters_pal,letters[1],Pokitto::Display::getWidth()/2-2*18,Pokitto::Display::getHeight()/2-8-2, keyboardcontroller};
-    Entity letter_C {letters_pal,letters[2],Pokitto::Display::getWidth()/2-1*18,Pokitto::Display::getHeight()/2-8+2, keyboardcontroller};
-    Entity letter_M {letters_pal,letters[3],Pokitto::Display::getWidth()/2-0*18,Pokitto::Display::getHeight()/2-8-2, keyboardcontroller};
-    Entity letter_A2 {letters_pal,letters[1],Pokitto::Display::getWidth()/2+1*18,Pokitto::Display::getHeight()/2-8+2, keyboardcontroller};
-    Entity letter_N {letters_pal,letters[4],Pokitto::Display::getWidth()/2+2*18,Pokitto::Display::getHeight()/2-8-2, keyboardcontroller};
+    LetterController1 letter_P_controller;
+    LetterController2 letter_A_controller;
+    LetterController1 letter_C_controller;
+    LetterController2 letter_M_controller;
+    LetterController1 letter_A2_controller;
+    LetterController2 letter_N_controller;
+
+    Entity letter_P {letters_pal,letters[0],Pokitto::Display::getWidth()/2-3*18,Pokitto::Display::getHeight()/2-8+2, letter_P_controller};
+    Entity letter_A {letters_pal,letters[1],Pokitto::Display::getWidth()/2-2*18,Pokitto::Display::getHeight()/2-8-2, letter_A_controller};
+    Entity letter_C {letters_pal,letters[2],Pokitto::Display::getWidth()/2-1*18,Pokitto::Display::getHeight()/2-8+2, letter_C_controller};
+    Entity letter_M {letters_pal,letters[3],Pokitto::Display::getWidth()/2-0*18,Pokitto::Display::getHeight()/2-8-2, letter_M_controller};
+    Entity letter_A2 {letters_pal,letters[1],Pokitto::Display::getWidth()/2+1*18,Pokitto::Display::getHeight()/2-8+2, letter_A2_controller};
+    Entity letter_N {letters_pal,letters[4],Pokitto::Display::getWidth()/2+2*18,Pokitto::Display::getHeight()/2-8-2, letter_N_controller};
     Entity pacman {pacman_pal,pacman_sprite[1],20,20, keyboardcontroller};
     std::vector<Entity> entities;
     void showTitleScreen()
@@ -47,6 +55,7 @@ class Game
 
         for(std::size_t index = 0;index<entities.size();++index)
             {
+                entities[index].update();
                 Pokitto::Display::setSpriteBitmap(index,entities[index].bitmap,entities[index].palette,entities[index].position.x,entities[index].position.y);
             }
 
