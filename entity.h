@@ -25,6 +25,9 @@ public:
     const uint16_t* palette; //pointer to main palette of the entity
     const uint8_t* bitmap; //pointer to current bitmap of the entity
     Vector2 position; // position vector
+    Vector2 movement; // movement vector
+    uint32_t time1 = Pokitto::Core::getTime(); // start time
+    uint32_t update_time; // everytime that a number of ms equal to update_time have passed, the movement vector is added to the position vector
     /*Entity(const uint16_t* palette, const uint8_t* bitmap,uint16_t x, uint16_t y,EntityController & controller)
 		: controller(&controller)
 	{
@@ -37,8 +40,8 @@ private:
 	EntityController * controller; //Controller of the entity
 
 public:
-    Entity(const uint16_t* palette, const uint8_t* bitmap,uint16_t x, uint16_t y, EntityController & controller)
-    : palette{palette}, bitmap{bitmap}, position{x,y}, controller(&controller)
+    Entity(const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time, EntityController & controller)
+    : palette{palette}, bitmap{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller)
     {
     }
 	EntityController * getController(void) const
@@ -49,6 +52,21 @@ public:
 	{
 		if(this->controller != nullptr)
 			this->controller->update(*this);
+        if((Pokitto::Core::getTime()-time1)>update_time)
+        {
+            time1 = Pokitto::Core::getTime();
+            this->position+=movement;
+
+        }
+        if (this->position.x<0)
+            this->position.x=0;
+        if (this->position.x>Pokitto::Display::getWidth()-bitmap[0])
+            this->position.x=Pokitto::Display::getWidth()-bitmap[0];
+        if (this->position.y<0)
+            this->position.y=0;
+        if (this->position.y>Pokitto::Display::getHeight()-bitmap[1])
+            this->position.y=Pokitto::Display::getHeight()-bitmap[1];
+
 	}
 };
 

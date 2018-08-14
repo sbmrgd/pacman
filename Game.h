@@ -35,21 +35,22 @@ class Game
     private:
     GameState gamestate;
     KeyboardController keyboardcontroller;
-    LetterController1 letter_P_controller;
-    LetterController2 letter_A_controller;
-    LetterController1 letter_C_controller;
-    LetterController2 letter_M_controller;
-    LetterController1 letter_A2_controller;
-    LetterController2 letter_N_controller;
+    LetterController letter_P_controller{-4};
+    LetterController letter_A_controller{+4};
+    LetterController letter_C_controller{-4};
+    LetterController letter_M_controller{+4};
+    LetterController letter_A2_controller{-4};
+    LetterController letter_N_controller{+4};
 
-    Entity letter_P {letters_pal,letters[0],Pokitto::Display::getWidth()/2-3*18,Pokitto::Display::getHeight()/2-8+2, letter_P_controller};
-    Entity letter_A {letters_pal,letters[1],Pokitto::Display::getWidth()/2-2*18,Pokitto::Display::getHeight()/2-8-2, letter_A_controller};
-    Entity letter_C {letters_pal,letters[2],Pokitto::Display::getWidth()/2-1*18,Pokitto::Display::getHeight()/2-8+2, letter_C_controller};
-    Entity letter_M {letters_pal,letters[3],Pokitto::Display::getWidth()/2-0*18,Pokitto::Display::getHeight()/2-8-2, letter_M_controller};
-    Entity letter_A2 {letters_pal,letters[1],Pokitto::Display::getWidth()/2+1*18,Pokitto::Display::getHeight()/2-8+2, letter_A2_controller};
-    Entity letter_N {letters_pal,letters[4],Pokitto::Display::getWidth()/2+2*18,Pokitto::Display::getHeight()/2-8-2, letter_N_controller};
-    Entity pacman {pacman_pal,pacman_sprite[1],20,20, keyboardcontroller};
+    //Entity letter_P {letters_pal,letters[0],Pokitto::Display::getWidth()/2-3*18,Pokitto::Display::getHeight()/2-8+2,0,0,400, letter_P_controller};
+    //Entity letter_A {letters_pal,letters[1],Pokitto::Display::getWidth()/2-2*18,Pokitto::Display::getHeight()/2-8-2,0,0,400, letter_A_controller};
+    //Entity letter_C {letters_pal,letters[2],Pokitto::Display::getWidth()/2-1*18,Pokitto::Display::getHeight()/2-8+2,0,0,400, letter_C_controller};
+    //Entity letter_M {letters_pal,letters[3],Pokitto::Display::getWidth()/2-0*18,Pokitto::Display::getHeight()/2-8-2,0,0,400, letter_M_controller};
+    //Entity letter_A2 {letters_pal,letters[1],Pokitto::Display::getWidth()/2+1*18,Pokitto::Display::getHeight()/2-8+2,0,0,400, letter_A2_controller};
+    //Entity letter_N {letters_pal,letters[4],Pokitto::Display::getWidth()/2+2*18,Pokitto::Display::getHeight()/2-8-2,0,0,400, letter_N_controller};
+    //Entity pacman {pacman_pal,pacman_sprite[1],20,20,1,0,20, keyboardcontroller};
     std::vector<Entity> entities;
+
     void showTitleScreen()
     {
 
@@ -77,13 +78,13 @@ class Game
     {
         Pokitto::Core::begin();
         Pokitto::Core::setFrameRate(255);
-        entities.push_back(letter_P);
-        entities.push_back(letter_A);
-        entities.push_back(letter_C);
-        entities.push_back(letter_M);
-        entities.push_back(letter_A2);
-        entities.push_back(letter_N);
-        entities.push_back(pacman);
+        entities.emplace_back(Entity{letters_pal,letters[0],Pokitto::Display::getWidth()/2-3*18,Pokitto::Display::getHeight()/2-8+2,0,0,400, letter_P_controller});
+        entities.emplace_back(Entity{letters_pal,letters[1],Pokitto::Display::getWidth()/2-2*18,Pokitto::Display::getHeight()/2-8-2,0,0,400, letter_A_controller});
+        entities.emplace_back(Entity{letters_pal,letters[2],Pokitto::Display::getWidth()/2-1*18,Pokitto::Display::getHeight()/2-8+2,0,0,400, letter_C_controller});
+        entities.emplace_back(Entity{letters_pal,letters[3],Pokitto::Display::getWidth()/2-0*18,Pokitto::Display::getHeight()/2-8-2,0,0,400, letter_M_controller});
+        entities.emplace_back(Entity{letters_pal,letters[1],Pokitto::Display::getWidth()/2+1*18,Pokitto::Display::getHeight()/2-8+2,0,0,400, letter_A2_controller});
+        entities.emplace_back(Entity{letters_pal,letters[4],Pokitto::Display::getWidth()/2+2*18,Pokitto::Display::getHeight()/2-8-2,0,0,400, letter_N_controller});
+        entities.emplace_back(Entity{pacman_pal,pacman_sprite[1],20,20,1,0,20, keyboardcontroller});
     }
     void run()
     {

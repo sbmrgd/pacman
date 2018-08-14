@@ -12,9 +12,21 @@ public:
 
 	virtual void update(Entity & entity)
 	{
-	    if(Pokitto::Buttons::pressed(BTN_A))
+	    if(Pokitto::Buttons::pressed(BTN_UP))
         {
-            entity.position.x+=1;
+            entity.movement =Vector2{0,-1};
+        }
+        if(Pokitto::Buttons::pressed(BTN_DOWN))
+        {
+            entity.movement =Vector2{0,1};
+        }
+        if(Pokitto::Buttons::pressed(BTN_LEFT))
+        {
+            entity.movement =Vector2{-1,0};
+        }
+        if(Pokitto::Buttons::pressed(BTN_RIGHT))
+        {
+            entity.movement =Vector2{1,0};
         }
 	};
 
