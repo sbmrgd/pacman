@@ -9,7 +9,10 @@ class KeyboardController : public EntityController
 public:
 	virtual ~KeyboardController(void) {}
 
+    virtual void update(void)
+    {
 
+    }
 	virtual void update(Entity & entity)
 	{
 	    if(Pokitto::Buttons::pressed(BTN_UP))

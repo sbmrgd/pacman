@@ -17,6 +17,7 @@ Copyright 2018 sbmrgd
 */
 #include "Vector2.h"
 #include "EntityController.h"
+#include "EntityRenderer.h"
 
 class Entity
 {
@@ -24,6 +25,7 @@ class Entity
 public:
     const uint16_t* palette; //pointer to main palette of the entity
     const uint8_t* bitmap; //pointer to current bitmap of the entity
+    const uint8_t* bitmap0; //pointer to the first bitmap of the sprite sheet of the entity
     Vector2 position; // position vector
     Vector2 movement; // movement vector
     uint32_t time1 = Pokitto::Core::getTime(); // start time
@@ -38,10 +40,16 @@ public:
 	}*/
 private:
 	EntityController * controller; //Controller of the entity
+	EntityRenderer  * renderer = nullptr; //Renderer of the entity
 
 public:
     Entity(const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time, EntityController & controller)
-    : palette{palette}, bitmap{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller)
+    : palette{palette}, bitmap{bitmap}, bitmap0{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller)
+    {
+    }
+    Entity(const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time,
+           EntityController & controller, EntityRenderer & renderer)
+    : palette{palette}, bitmap{bitmap}, bitmap0{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller), renderer(&renderer)
     {
     }
 	EntityController * getController(void) const
@@ -67,6 +75,11 @@ public:
         if (this->position.y>Pokitto::Display::getHeight()-bitmap[1])
             this->position.y=Pokitto::Display::getHeight()-bitmap[1];
 
+	}
+	void render(void)
+	{
+    if(this->renderer != nullptr)
+			this->renderer->render(*this);
 	}
 };
 

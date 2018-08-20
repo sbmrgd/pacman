@@ -10,6 +10,7 @@ class LetterController : public EntityController
 private:
     uint32_t time1 = Pokitto::Core::getTime();
     int16_t y_adjustment;
+    bool elapsed = false;
 
 public:
     LetterController (int16_t y_adjustment) : y_adjustment(y_adjustment)
@@ -17,15 +18,21 @@ public:
     }
 	virtual ~LetterController(void) {}
 
-
-	virtual void update(Entity & entity)
-	{
-	    if((Pokitto::Core::getTime()-time1)>400)
+    void update(void)
+    {
+        if((Pokitto::Core::getTime()-time1)>400)
         {
             time1 = Pokitto::Core::getTime();
-            //entity.position.y+=y_adjustment;
-            entity.movement.y = -y_adjustment;
             y_adjustment *= -1;
+            elapsed = true;
+        }
+        else elapsed = false;
+    }
+	void update(Entity & entity)
+	{
+	    if(elapsed)
+        {
+            entity.movement.y = y_adjustment;
         }
 	};
 
