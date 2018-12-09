@@ -19,6 +19,10 @@ Copyright 2018 sbmrgd
 #include "EntityController.h"
 #include "EntityRenderer.h"
 
+constexpr uint16_t mazeWidth = 21;
+constexpr uint16_t mazeHeight = 21;
+constexpr uint16_t spriteWidth = 8;
+
 class Entity
 {
 
@@ -79,7 +83,34 @@ public:
             if((Pokitto::Core::getTime()-time1)>update_time)
             {
                 time1 = Pokitto::Core::getTime();
-                this->position+=movement;
+                //this->position+=movement;
+
+
+                if (((this->position.x%8)==0) && ((this->position.y%8)==0))
+                    {
+                        if (maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]>1)
+                                {
+                                    maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]=0;
+                                    //total--;
+                                }
+                        if (maze[(this->position.y/8+movement.y)*mazeHeight+(this->position.x/8+movement.x+mazeWidth)%mazeWidth]!=1)
+                        {
+                            if (this->position.x==160) this->position.x=0;
+                            else if (this->position.x==0) this->position.x=160;
+                                this->position+=movement;
+
+
+
+                        }
+                        else
+                        {
+                            //this->position-=movement;
+                        }
+                }
+                else
+                {
+                    this->position+=movement;
+                }
 
             }
 

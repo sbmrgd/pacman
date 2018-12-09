@@ -96,6 +96,8 @@ class Game
         }
         if (Pokitto::Buttons::pressed(BTN_C))
         {
+                Pokitto::Sound::playMusicStream();
+
                 gamestate = GameState::GamePlay;
                 this->clearScreen();
         }
@@ -118,11 +120,14 @@ class Game
     public:
     void begin()
     {
+        Pokitto::Sound::playMusicStream("music/pacman.snd"); //before game.begin!
         //Initialize Pokitto
+        Pokitto::Sound::pauseMusicStream();
         Pokitto::Core::begin();
         Pokitto::Core::setFrameRate(255);
         Pokitto::Display::persistence = 1;
         Pokitto::Display::setFont(fontKoubit);
+        Pokitto::Display::loadRGBPalette(Game_pal);
 
         //Initialize Controllers
         controllers.push_back(&letterControllerEven);
@@ -134,17 +139,22 @@ class Game
         renderers.push_back(&pacmanRenderer);
 
         //Initialize Entities
-        entities.emplace_back(letters_pal,letters[0],(int16_t)(Pokitto::Display::getWidth()/2-3*18),(int16_t)(Pokitto::Display::getHeight()/2-8+2),0,0,400, letterControllerEven);
-        entities.emplace_back(letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2-2*18),(int16_t)(Pokitto::Display::getHeight()/2-8-2),0,0,400, letterControllerOdd);
-        entities.emplace_back(letters_pal,letters[2],(int16_t)(Pokitto::Display::getWidth()/2-1*18),(int16_t)(Pokitto::Display::getHeight()/2-8+2),0,0,400, letterControllerEven);
-        entities.emplace_back(letters_pal,letters[3],(int16_t)(Pokitto::Display::getWidth()/2-0*18),(int16_t)(Pokitto::Display::getHeight()/2-8-2),0,0,400, letterControllerOdd);
-        entities.emplace_back(letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2+1*18),(int16_t)(Pokitto::Display::getHeight()/2-8+2),0,0,400, letterControllerEven);
-        entities.emplace_back(letters_pal,letters[4],(int16_t)(Pokitto::Display::getWidth()/2+2*18),(int16_t)(Pokitto::Display::getHeight()/2-8-2),0,0,400, letterControllerOdd);
-        entities.emplace_back(ghost_blinky_pal,ghost[0],5,5,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(letters_pal,letters[0],(int16_t)(Pokitto::Display::getWidth()/2-3*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven);
+        entities.emplace_back(letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2-2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd);
+        entities.emplace_back(letters_pal,letters[2],(int16_t)(Pokitto::Display::getWidth()/2-1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven);
+        entities.emplace_back(letters_pal,letters[3],(int16_t)(Pokitto::Display::getWidth()/2-0*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd);
+        entities.emplace_back(letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2+1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven);
+        entities.emplace_back(letters_pal,letters[4],(int16_t)(Pokitto::Display::getWidth()/2+2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd);
+        /*entities.emplace_back(ghost_blinky_pal,ghost[0],5,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_inky_pal,ghost[0],21,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_clyde_pal,ghost[0],37,5,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(ghost_pinky_pal,ghost[0],53,5,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(pacman_pal,pacman_sprite[0],20,20,1,0,20, keyboardController, pacmanRenderer);
+        entities.emplace_back(ghost_pinky_pal,ghost[0],53,5,1,0,20, keyboardController, ghostRenderer);*/
+        //entities.emplace_back(pacman_pal,pacman_sprite[0],20,20,1,0,20, keyboardController, pacmanRenderer);
+        entities.emplace_back(ghost_blinky_pal,ghost_small[0],4,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(ghost_inky_pal,ghost_small[0],12,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(ghost_clyde_pal,ghost_small[0],20,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(ghost_pinky_pal,ghost_small[0],28,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(pacman_pal,pacman_small2[0],36,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, pacmanRenderer);
 
         for(std::size_t index = 0;index<entities.size();++index)
         {
@@ -165,6 +175,8 @@ class Game
             //Pokitto::Display::setSpritePos(index,300,300);
         }
         renderState();
+        Pokitto::Display::fillScreen(0);
+        updateScreen = true;
 
         /*TO DO: this part should be moved to a new function beginGame or InitializeGame or something
         for(std::size_t index = 6;index<10;++index)
@@ -174,24 +186,56 @@ class Game
 
         entities[10].position=Vector2{0,Pokitto::Display::getHeight()-16};
         */
-
-        Pokitto::Display::fillScreen(0);
-        updateScreen = true;
-
-
     }
 
     void playGame()
     {
 
-        Pokitto::Display::setColor(1);
-        Pokitto::Display::setCursor(10,10);
-        Pokitto::Display::println("gameplay");
+        Pokitto::Display::setColor(2);
+        /*for(int i=0;i<Pokitto::Display::getWidth();i+=16)
+        {
+            Pokitto::Display::fillRectangle(i,0,15,15);
+            Pokitto::Display::fillRectangle(i,Pokitto::Display::getHeight()-16,15,15);
+        }*/
+        for(uint16_t x=0;x<mazeWidth;x++)
+                {
+                    for(uint16_t y=0;y<mazeHeight;y++)
+                    {
+                        switch (maze[(y)*mazeWidth+x])
+                        {
+                            case 0:
+                                Pokitto::Display::setColor(0);
+                                Pokitto::Display::fillRectangle(x*8,y*8,8,7);
+                                break;
+                                break;
+                            case 1:
+                                Pokitto::Display::setColor(2);
+                                Pokitto::Display::fillRectangle(x*8,y*8,8,7);
+                                break;
+                            case 2:
+                                Pokitto::Display::setColor(1);
+                                //Pokitto::Display::fillCircle(8*x+3,8*y+3,1);
+                                Pokitto::Display::fillRectangle(8*x+3,8*y+3,2,1);
+                                break;
+                            case 3:
+                                Pokitto::Display::setColor(1);
+                                Pokitto::Display::fillCircle(8*x+3,8*y+3,2);
+                                break;
+                        }
+                    }
+                }
         if (updateScreen)
         {
+            Pokitto::Sound::pauseMusicStream();
             Pokitto::Display::update();
         updateScreen=false;
+        for(uint8_t i=entities.size()-1;i<entities.size();i++)
+        {
+            //entities[i].makeVisible(Vector2{(i-6)*16,16});
+            entities[i].makeVisible(Vector2{7*8,17*8});
         }
+        }
+
         updateState();
         renderState();
 

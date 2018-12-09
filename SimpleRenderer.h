@@ -33,7 +33,10 @@ public:
 	{
         if (elapsed)
         {
-            entity.bitmap = entity.bitmap0 + bitmapnr*66;
+            //entity.bitmap = entity.bitmap0 + bitmapnr*66;
+            entity.bitmap = entity.bitmap0 + bitmapnr*18;
+            entity.changedBitmap = true;
         }
+        else entity.changedBitmap = false;
 	}
 };

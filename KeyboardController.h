@@ -15,21 +15,39 @@ public:
     }
 	virtual void update(Entity & entity)
 	{
-	    if(Pokitto::Buttons::pressed(BTN_UP))
-        {
-            entity.movement =Vector2{0,-1};
+	    //if(Pokitto::Buttons::pressed(BTN_UP))
+        if(Pokitto::Buttons::upBtn())
+        {   if ((maze[(entity.position.y/8-1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8-1)*21+((entity.position.x+7)/8)]!=1))
+            {
+                entity.movement =Vector2{0,-1};
+            }
+
         }
-        if(Pokitto::Buttons::pressed(BTN_DOWN))
+        //if(Pokitto::Buttons::pressed(BTN_DOWN))
+        if(Pokitto::Buttons::downBtn())
         {
-            entity.movement =Vector2{0,1};
+            if ((maze[(entity.position.y/8+1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8+1)*21+((entity.position.x+7)/8)]!=1))
+            {
+                entity.movement =Vector2{0,1};
+            }
+
         }
-        if(Pokitto::Buttons::pressed(BTN_LEFT))
+        //if(Pokitto::Buttons::pressed(BTN_LEFT))
+        if(Pokitto::Buttons::leftBtn())
         {
-            entity.movement =Vector2{-1,0};
+            if ((maze[(entity.position.y/8)*21+(entity.position.x/8-1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8-1)]!=1))
+            {
+                entity.movement =Vector2{-1,0};
+            }
+
         }
-        if(Pokitto::Buttons::pressed(BTN_RIGHT))
+        //if(Pokitto::Buttons::pressed(BTN_RIGHT))
+        if(Pokitto::Buttons::rightBtn())
         {
-            entity.movement =Vector2{1,0};
+            if ((maze[(entity.position.y/8)*21+(entity.position.x/8+1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8+1)]!=1))
+            {
+                entity.movement =Vector2{1,0};
+            }
         }
 	};
 

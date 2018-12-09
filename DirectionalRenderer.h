@@ -49,7 +49,10 @@ public:
 	{
         if (elapsed)
         {
-            entity.bitmap = entity.bitmap0 +getDirection(entity)*4*66 + bitmapnr*66;
+            //entity.bitmap = entity.bitmap0 +getDirection(entity)*4*66 + bitmapnr*66;
+            entity.bitmap = entity.bitmap0 +getDirection(entity)*4*18 + bitmapnr*18;
+            entity.changedBitmap = true;
         }
+        else entity.changedBitmap = false;
 	}
 };

@@ -25,11 +25,17 @@ public:
     {
         this->x +=r.x;
         this->y +=r.y;
-        }
+    }
     Vector2 & operator+=(const Vector2 vector2)
     {
         this->x +=vector2.x;
         this->y +=vector2.y;
         return *this;
-        }
+    }
+    Vector2 & operator-=(const Vector2 vector2)
+    {
+        this->x -=vector2.x;
+        this->y -=vector2.y;
+        return *this;
+    }
 };

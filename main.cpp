@@ -15,6 +15,7 @@ Copyright 2018 sbmrgd
 
 */
 
+#define DISABLEAVRMIN
 #include <Pokitto.h>
 
 #include "Game.h"
