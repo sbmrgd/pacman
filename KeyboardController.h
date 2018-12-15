@@ -17,7 +17,8 @@ public:
 	{
 	    //if(Pokitto::Buttons::pressed(BTN_UP))
         if(Pokitto::Buttons::upBtn())
-        {   if ((maze[(entity.position.y/8-1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8-1)*21+((entity.position.x+7)/8)]!=1))
+        {   //if ((maze[(entity.position.y/8-1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8-1)*21+((entity.position.x+7)/8)]!=1))
+            if ((maze[(entity.position.y/8-1)*21+(entity.position.x/8)]!=Tile::Wall) && (maze[(entity.position.y/8-1)*21+((entity.position.x+7)/8)]!=Tile::Wall))
             {
                 entity.movement =Vector2{0,-1};
             }
@@ -26,7 +27,8 @@ public:
         //if(Pokitto::Buttons::pressed(BTN_DOWN))
         if(Pokitto::Buttons::downBtn())
         {
-            if ((maze[(entity.position.y/8+1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8+1)*21+((entity.position.x+7)/8)]!=1))
+            //if ((maze[(entity.position.y/8+1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8+1)*21+((entity.position.x+7)/8)]!=1))
+            if ((maze[(entity.position.y/8+1)*21+(entity.position.x/8)]!=Tile::Wall) && (maze[(entity.position.y/8+1)*21+((entity.position.x+7)/8)]!=Tile::Wall))
             {
                 entity.movement =Vector2{0,1};
             }
@@ -35,7 +37,8 @@ public:
         //if(Pokitto::Buttons::pressed(BTN_LEFT))
         if(Pokitto::Buttons::leftBtn())
         {
-            if ((maze[(entity.position.y/8)*21+(entity.position.x/8-1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8-1)]!=1))
+            //if ((maze[(entity.position.y/8)*21+(entity.position.x/8-1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8-1)]!=1))
+            if ((maze[(entity.position.y/8)*21+(entity.position.x/8-1)]!=Tile::Wall) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8-1)]!=Tile::Wall))
             {
                 entity.movement =Vector2{-1,0};
             }
@@ -44,7 +47,8 @@ public:
         //if(Pokitto::Buttons::pressed(BTN_RIGHT))
         if(Pokitto::Buttons::rightBtn())
         {
-            if ((maze[(entity.position.y/8)*21+(entity.position.x/8+1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8+1)]!=1))
+            //if ((maze[(entity.position.y/8)*21+(entity.position.x/8+1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8+1)]!=1))
+            if ((maze[(entity.position.y/8)*21+(entity.position.x/8+1)]!=Tile::Wall) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8+1)]!=Tile::Wall))
             {
                 entity.movement =Vector2{1,0};
             }

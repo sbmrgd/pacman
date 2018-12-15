@@ -197,29 +197,29 @@ class Game
             Pokitto::Display::fillRectangle(i,0,15,15);
             Pokitto::Display::fillRectangle(i,Pokitto::Display::getHeight()-16,15,15);
         }*/
-        for(uint16_t x=0;x<mazeWidth;x++)
+        for(std::size_t x=0;x<mazeWidth;x++)
                 {
-                    for(uint16_t y=0;y<mazeHeight;y++)
+                    for(std::size_t y=0;y<mazeHeight;y++)
                     {
                         switch (maze[(y)*mazeWidth+x])
                         {
-                            case 0:
+                            case Tile::Empty:
                                 Pokitto::Display::setColor(0);
-                                Pokitto::Display::fillRectangle(x*8,y*8,8,7);
+                                Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1); //bug in fillRectangle, so spriteHeight-1 instead of spriteHeight
                                 break;
                                 break;
-                            case 1:
+                            case Tile::Wall:
                                 Pokitto::Display::setColor(2);
-                                Pokitto::Display::fillRectangle(x*8,y*8,8,7);
+                                Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1);
                                 break;
-                            case 2:
+                            case Tile::Pill:
                                 Pokitto::Display::setColor(1);
                                 //Pokitto::Display::fillCircle(8*x+3,8*y+3,1);
-                                Pokitto::Display::fillRectangle(8*x+3,8*y+3,2,1);
+                                Pokitto::Display::fillRectangle(x*spriteWidth+3,y*spriteHeight+3,2,1);
                                 break;
-                            case 3:
+                            case Tile::PowerPill:
                                 Pokitto::Display::setColor(1);
-                                Pokitto::Display::fillCircle(8*x+3,8*y+3,2);
+                                Pokitto::Display::fillCircle(spriteWidth*x+3,spriteHeight*y+3,2);
                                 break;
                         }
                     }

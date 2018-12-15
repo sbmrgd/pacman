@@ -1266,7 +1266,38 @@ const uint8_t pacman_small2 [][18] ={
 },
 };
 
-int maze[21*21] {
+enum class Tile
+{
+	Empty = 0,
+	Wall = 1,
+	Pill = 2,
+	PowerPill = 3,
+};
+Tile maze[21*21] {
+Tile::Empty, Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::PowerPill, Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::PowerPill, Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Empty, Tile::Empty,     Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Empty,     Tile::Empty, Tile::Empty,
+Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,
+Tile::Empty, Tile::Empty, Tile::Empty,     Tile::Empty, Tile::Empty, Tile::Pill, Tile::Empty, Tile::Empty, Tile::Wall,  Tile::Empty, Tile::Empty, Tile::Empty, Tile::Wall,  Tile::Empty, Tile::Empty, Tile::Pill, Tile::Empty, Tile::Empty, Tile::Empty,     Tile::Empty, Tile::Empty,
+Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,
+Tile::Empty, Tile::Empty, Tile::Empty,     Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Empty,     Tile::Empty, Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Empty, Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::PowerPill, Tile::Pill,  Tile::Wall,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Wall,  Tile::Pill,  Tile::PowerPill, Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Wall,      Tile::Pill,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Pill,  Tile::Wall,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
+Tile::Empty, Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Empty};
+
+
+int mazeo[21*21] {
 0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 0,1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1,0,
 0,1,3,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,3,1,0,

@@ -22,6 +22,7 @@ Copyright 2018 sbmrgd
 constexpr uint16_t mazeWidth = 21;
 constexpr uint16_t mazeHeight = 21;
 constexpr uint16_t spriteWidth = 8;
+constexpr uint16_t spriteHeight = 8;
 
 class Entity
 {
@@ -86,25 +87,21 @@ public:
                 //this->position+=movement;
 
 
-                if (((this->position.x%8)==0) && ((this->position.y%8)==0))
+                if (((this->position.x%spriteWidth)==0) && ((this->position.y%spriteHeight)==0))
                     {
-                        if (maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]>1)
+                        //if (maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]>1)
+                        if (maze[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]>Tile::Wall)
                                 {
-                                    maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]=0;
+                                    //maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]=0;
+                                    maze[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]=Tile::Empty;
                                     //total--;
                                 }
-                        if (maze[(this->position.y/8+movement.y)*mazeHeight+(this->position.x/8+movement.x+mazeWidth)%mazeWidth]!=1)
+                        //if (maze[(this->position.y/8+movement.y)*mazeHeight+(this->position.x/8+movement.x+mazeWidth)%mazeWidth]!=1)
+                        if (maze[(this->position.y/spriteHeight+movement.y)*mazeHeight+(this->position.x/spriteWidth+movement.x+mazeWidth)%mazeWidth]!=Tile::Wall)
                         {
-                            if (this->position.x==160) this->position.x=0;
-                            else if (this->position.x==0) this->position.x=160;
+                            if (this->position.x/spriteWidth==(mazeWidth-1)) this->position.x=0;
+                            else if (this->position.x==0) this->position.x=(mazeWidth-1)*spriteWidth;
                                 this->position+=movement;
-
-
-
-                        }
-                        else
-                        {
-                            //this->position-=movement;
                         }
                 }
                 else
