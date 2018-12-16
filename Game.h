@@ -23,7 +23,8 @@ Copyright 2018 sbmrgd
 #include "Vector2.h"
 #include "KeyboardController.h"
 #include "LetterControllers.h"
-#include "SimpleRenderer.h"
+#include "StaticRenderer.h"
+#include "AnimatedRenderer.h"
 #include "DirectionalRenderer.h"
 enum class GameState
 {
@@ -39,7 +40,8 @@ class Game
     KeyboardController keyboardController;
     LetterController letterControllerEven{-4};
     LetterController letterControllerOdd{4};
-    SimpleRenderer ghostRenderer;
+    StaticRenderer letterRenderer;
+    AnimatedRenderer ghostRenderer;
     DirectionalRenderer pacmanRenderer;
     bool updateScreen = false;
 
@@ -72,12 +74,12 @@ class Game
             entity.render();
         }
 
-        for(std::size_t index = 0;index<entities.size();++index)
+        /*for(std::size_t index = 0;index<entities.size();++index)
         {
             if (!entities[index].changedBitmap) Pokitto::Display::setSpritePos(index,entities[index].position.x,entities[index].position.y);
             else Pokitto::Display::setSpriteBitmap(index,entities[index].bitmap,entities[index].palette,entities[index].position.x,entities[index].position.y);
 
-        }
+        }*/
     }
 
     void showTitleScreen()
@@ -135,31 +137,28 @@ class Game
         controllers.push_back(&keyboardController);
 
         //Initialize Renderers
+        renderers.push_back(&letterRenderer);
         renderers.push_back(&ghostRenderer);
         renderers.push_back(&pacmanRenderer);
 
         //Initialize Entities
-        entities.emplace_back(letters_pal,letters[0],(int16_t)(Pokitto::Display::getWidth()/2-3*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven);
-        entities.emplace_back(letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2-2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd);
-        entities.emplace_back(letters_pal,letters[2],(int16_t)(Pokitto::Display::getWidth()/2-1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven);
-        entities.emplace_back(letters_pal,letters[3],(int16_t)(Pokitto::Display::getWidth()/2-0*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd);
-        entities.emplace_back(letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2+1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven);
-        entities.emplace_back(letters_pal,letters[4],(int16_t)(Pokitto::Display::getWidth()/2+2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd);
+        entities.emplace_back(0, letters_pal,letters[0],(int16_t)(Pokitto::Display::getWidth()/2-3*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven, letterRenderer);
+        entities.emplace_back(1, letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2-2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd, letterRenderer);
+        entities.emplace_back(2, letters_pal,letters[2],(int16_t)(Pokitto::Display::getWidth()/2-1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven, letterRenderer);
+        entities.emplace_back(3, letters_pal,letters[3],(int16_t)(Pokitto::Display::getWidth()/2-0*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd, letterRenderer);
+        entities.emplace_back(4, letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2+1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven, letterRenderer);
+        entities.emplace_back(5, letters_pal,letters[4],(int16_t)(Pokitto::Display::getWidth()/2+2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd, letterRenderer);
         /*entities.emplace_back(ghost_blinky_pal,ghost[0],5,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_inky_pal,ghost[0],21,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_clyde_pal,ghost[0],37,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_pinky_pal,ghost[0],53,5,1,0,20, keyboardController, ghostRenderer);*/
         //entities.emplace_back(pacman_pal,pacman_sprite[0],20,20,1,0,20, keyboardController, pacmanRenderer);
-        entities.emplace_back(ghost_blinky_pal,ghost_small[0],4,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(ghost_inky_pal,ghost_small[0],12,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(ghost_clyde_pal,ghost_small[0],20,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(ghost_pinky_pal,ghost_small[0],28,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(pacman_pal,pacman_small2[0],36,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, pacmanRenderer);
+        entities.emplace_back(6, ghost_blinky_pal,ghost_small[0],4,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(7, ghost_inky_pal,ghost_small[0],12,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(8, ghost_clyde_pal,ghost_small[0],20,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(9, ghost_pinky_pal,ghost_small[0],28,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(10, pacman_pal,pacman_small2[0],36,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, pacmanRenderer);
 
-        for(std::size_t index = 0;index<entities.size();++index)
-        {
-                Pokitto::Display::setSpriteBitmap(index,entities[index].bitmap,entities[index].palette,entities[index].position.x,entities[index].position.y);
-        }
         updateScreen = true;
     }
     void clearScreen()

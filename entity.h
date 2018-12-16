@@ -28,6 +28,7 @@ class Entity
 {
 
 public:
+    const uint8_t index; //index of the entry
     const uint16_t* palette; //pointer to main palette of the entity
     const uint8_t* bitmap; //pointer to current bitmap of the entity
     const uint8_t* bitmap0; //pointer to the first bitmap of the sprite sheet of the entity
@@ -50,16 +51,16 @@ private:
 	bool isVisible = true;
 
 public:
-    Entity(const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time, EntityController & controller)
-    : palette{palette}, bitmap{bitmap}, bitmap0{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller)
+    /*Entity(const uint8_t index, const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time, EntityController & controller)
+    : index{index}, palette{palette}, bitmap{bitmap}, bitmap0{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller)
     {
-
-    }
-    Entity(const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time,
+        Pokitto::Display::setSpriteBitmap(index, bitmap, palette, p_x, p_y);
+    }*/
+    Entity(const uint8_t index, const uint16_t* palette, const uint8_t* bitmap,int16_t p_x, int16_t p_y, int16_t m_x, int16_t m_y, uint32_t update_time,
            EntityController & controller, EntityRenderer & renderer)
-    : palette{palette}, bitmap{bitmap}, bitmap0{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller), renderer(&renderer)
+    : index{index}, palette{palette}, bitmap{bitmap}, bitmap0{bitmap}, position{p_x,p_y}, movement{m_x,m_y}, update_time{update_time}, controller(&controller), renderer(&renderer)
     {
-
+        Pokitto::Display::setSpriteBitmap(index, bitmap, palette, p_x, p_y);
     }
 	EntityController * getController(void) const
 	{
@@ -68,7 +69,7 @@ public:
 	void makeInvisible()
 	{
 	    isVisible = false;
-	    this->position=Vector2{300,300};
+	    //this->position=Vector2{300,300};
 	}
 	void makeVisible(Vector2 newPosition)
 	{
@@ -120,13 +121,21 @@ public:
             if (this->position.y>Pokitto::Display::getHeight()-bitmap[1])
                 this->position.y=Pokitto::Display::getHeight()-bitmap[1];
         }
-
-
 	}
+
 	void render(void)
 	{
-    if(this->renderer != nullptr)
-			this->renderer->render(*this);
+	    if (this->isVisible)
+        {
+            if(this->renderer != nullptr)
+            {
+                this->renderer->render(*this);
+            }
+        }
+        else
+        {
+            Pokitto::Display::setSpritePos(this->index, Pokitto::Display::getWidth(), Pokitto::Display::getHeight());
+        }
 	}
 };
 

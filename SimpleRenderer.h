@@ -36,7 +36,12 @@ public:
             //entity.bitmap = entity.bitmap0 + bitmapnr*66;
             entity.bitmap = entity.bitmap0 + bitmapnr*18;
             entity.changedBitmap = true;
+            Pokitto::Display::setSpriteBitmap(entity.index, entity.bitmap, entity.palette, entity.position.x, entity.position.y);
         }
-        else entity.changedBitmap = false;
+        else
+        {
+            entity.changedBitmap = false;
+            Pokitto::Display::setSpritePos(entity.index, entity.position.x, entity.position.y);
+        }
 	}
 };

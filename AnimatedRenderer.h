@@ -4,31 +4,15 @@
 #include "EntityRenderer.h"
 #include "entity.h"
 
-class DirectionalRenderer : public EntityRenderer
+class AnimatedRenderer : public EntityRenderer
 {
 
 private:
     uint32_t time1 = Pokitto::Core::getTime();
     int16_t bitmapnr = 0;
-    int16_t direction = 0;
     bool elapsed = false;
-
-    int16_t getDirection(Entity &entity)
-    {
-        if (entity.movement.x>0) return 0;
-        else
-        {
-            if (entity.movement.x<0) return 1;
-            else
-            {
-                if (entity.movement.y<0) return 2;
-                else return 3;
-            }
-        }
-
-    }
 public:
-	virtual ~DirectionalRenderer(void) {}
+	virtual ~AnimatedRenderer(void) {}
 
 	// For updating the frame count mainly
 	virtual void update(void)
@@ -49,8 +33,8 @@ public:
 	{
         if (elapsed)
         {
-            //entity.bitmap = entity.bitmap0 +getDirection(entity)*4*66 + bitmapnr*66;
-            entity.bitmap = entity.bitmap0 +getDirection(entity)*4*18 + bitmapnr*18;
+            //entity.bitmap = entity.bitmap0 + bitmapnr*66;
+            entity.bitmap = entity.bitmap0 + bitmapnr*18;
             entity.changedBitmap = true;
             Pokitto::Display::setSpriteBitmap(entity.index, entity.bitmap, entity.palette, entity.position.x, entity.position.y);
         }
