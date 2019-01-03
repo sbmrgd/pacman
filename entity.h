@@ -18,11 +18,14 @@ Copyright 2018 sbmrgd
 #include "Vector2.h"
 #include "EntityController.h"
 #include "EntityRenderer.h"
+#include "Grid.h"
+#include "Game.h"
 
 constexpr uint16_t mazeWidth = 21;
 constexpr uint16_t mazeHeight = 21;
 constexpr uint16_t spriteWidth = 8;
 constexpr uint16_t spriteHeight = 8;
+constexpr uint16_t spriteBitMode = 2; // nr of bits per color: 2 bit (max 4 colors per sprite)
 
 class Entity
 {
@@ -36,7 +39,7 @@ public:
     Vector2 movement; // movement vector
     uint32_t time1 = Pokitto::Core::getTime(); // start time
     uint32_t update_time; // everytime that a number of ms equal to update_time have passed, the movement vector is added to the position vector
-    bool changedBitmap = false;
+    //bool changedBitmap = false;
     /*Entity(const uint16_t* palette, const uint8_t* bitmap,uint16_t x, uint16_t y,EntityController & controller)
 		: controller(&controller)
 	{
@@ -76,12 +79,12 @@ public:
 	    isVisible = true;
 	    this->position=newPosition;
 	}
-	void update(void)
+	void update(Grid & grid)
 	{
 	    if (isVisible)
         {
             if(this->controller != nullptr)
-                this->controller->update(*this);
+                this->controller->update(*this, grid);
             if((Pokitto::Core::getTime()-time1)>update_time)
             {
                 time1 = Pokitto::Core::getTime();
@@ -89,21 +92,24 @@ public:
 
 
                 if (((this->position.x%spriteWidth)==0) && ((this->position.y%spriteHeight)==0))
-                    {
+                {
                         //if (maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]>1)
-                        if (maze[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]>Tile::Wall)
-                                {
+                        //if (mazeData[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]>Tile::Wall)
+                    if (grid.getItem((this->position.x/spriteWidth),(this->position.y/spriteHeight))>Tile::Wall)
+                    {
                                     //maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]=0;
-                                    maze[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]=Tile::Empty;
-                                    //total--;
-                                }
+                                    //mazeData[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]=Tile::Empty;
+                        grid.getItem((this->position.x/spriteWidth),(this->position.y/spriteHeight))=Tile::Empty;
+                        grid.totalPillsRemaining--;
+                    }
                         //if (maze[(this->position.y/8+movement.y)*mazeHeight+(this->position.x/8+movement.x+mazeWidth)%mazeWidth]!=1)
-                        if (maze[(this->position.y/spriteHeight+movement.y)*mazeHeight+(this->position.x/spriteWidth+movement.x+mazeWidth)%mazeWidth]!=Tile::Wall)
-                        {
-                            if (this->position.x/spriteWidth==(mazeWidth-1)) this->position.x=0;
-                            else if (this->position.x==0) this->position.x=(mazeWidth-1)*spriteWidth;
-                                this->position+=movement;
-                        }
+                        //if (mazeData[(this->position.y/spriteHeight+movement.y)*mazeHeight+(this->position.x/spriteWidth+movement.x+mazeWidth)%mazeWidth]!=Tile::Wall)
+                    if (grid.getItem((this->position.x/spriteWidth+movement.x+mazeWidth)%mazeWidth,(this->position.y/spriteHeight+movement.y))!=Tile::Wall)
+                    {
+                        if (this->position.x/spriteWidth==(mazeWidth-1)) this->position.x=0;
+                        else if (this->position.x==0) this->position.x=(mazeWidth-1)*spriteWidth;
+                        this->position+=movement;
+                    }
                 }
                 else
                 {

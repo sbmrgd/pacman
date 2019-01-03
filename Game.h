@@ -26,6 +26,8 @@ Copyright 2018 sbmrgd
 #include "StaticRenderer.h"
 #include "AnimatedRenderer.h"
 #include "DirectionalRenderer.h"
+#include "Grid.h"
+
 enum class GameState
 {
     TitleScreen,
@@ -35,7 +37,7 @@ enum class GameState
 
 class Game
 {
-    private:
+private:
     GameState gamestate;
     KeyboardController keyboardController;
     LetterController letterControllerEven{-4};
@@ -43,6 +45,7 @@ class Game
     StaticRenderer letterRenderer;
     AnimatedRenderer ghostRenderer;
     DirectionalRenderer pacmanRenderer;
+    Grid maze{mazeData};
     bool updateScreen = false;
 
     std::vector<Entity> entities;
@@ -58,7 +61,7 @@ class Game
 
         for(auto & entity : entities)
         {
-                entity.update();
+                entity.update(maze);
         }
 
         for(auto & renderer : renderers)
@@ -84,23 +87,23 @@ class Game
 
     void showTitleScreen()
     {
-
         updateState();
         renderState();
 
-        Pokitto::Display::setCursor(Pokitto::Display::getWidth()/2-4*Pokitto::Display::fontWidth,Pokitto::Display::getHeight()-Pokitto::Display::fontHeight-10);
-        Pokitto::Display::println("Insert (C)oin");
 
         if (updateScreen)
         {
+            Pokitto::Display::setCursor(Pokitto::Display::getWidth()/2-4*Pokitto::Display::fontWidth,Pokitto::Display::getHeight()-Pokitto::Display::fontHeight-10);
+            Pokitto::Display::println("Insert (C)oin");
+
             Pokitto::Display::update();
             updateScreen = false;
         }
         if (Pokitto::Buttons::pressed(BTN_C))
         {
                 Pokitto::Sound::playMusicStream();
-
                 gamestate = GameState::GamePlay;
+                maze = Grid(mazeData);
                 this->clearScreen();
         }
     }
@@ -119,7 +122,7 @@ class Game
         }
     }
 
-    public:
+public:
     void begin()
     {
         Pokitto::Sound::playMusicStream("music/pacman.snd"); //before game.begin!
@@ -161,6 +164,7 @@ class Game
 
         updateScreen = true;
     }
+
     void clearScreen()
     {
         for(int16_t x=0;x<Pokitto::Display::getHeight()/2+1;x++){
@@ -187,6 +191,37 @@ class Game
         */
     }
 
+    void drawMaze()
+    {
+        for(std::size_t x=0;x<mazeWidth;x++)
+        {
+            for(std::size_t y=0;y<mazeHeight;y++)
+            {
+                switch (maze.getItem( x, y))
+                {
+                    case Tile::Empty:
+                        Pokitto::Display::setColor(0);
+                        Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1); //bug in fillRectangle, so spriteHeight-1 instead of spriteHeight
+                        break;
+                    case Tile::Wall:
+                        Pokitto::Display::setColor(2);
+                        Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1);
+                        break;
+                    case Tile::Pill:
+                        Pokitto::Display::setColor(1);
+                        //Pokitto::Display::fillCircle(8*x+3,8*y+3,1);
+                        Pokitto::Display::fillRectangle(x*spriteWidth+3,y*spriteHeight+3,2,1);
+                        break;
+                    case Tile::PowerPill:
+                        Pokitto::Display::setColor(1);
+                        Pokitto::Display::fillCircle(spriteWidth*x+3,spriteHeight*y+3,2);
+                        break;
+                }
+            }
+        }
+
+    }
+
     void playGame()
     {
 
@@ -196,48 +231,55 @@ class Game
             Pokitto::Display::fillRectangle(i,0,15,15);
             Pokitto::Display::fillRectangle(i,Pokitto::Display::getHeight()-16,15,15);
         }*/
-        for(std::size_t x=0;x<mazeWidth;x++)
+        /*for(std::size_t x=0;x<mazeWidth;x++)
+        {
+            for(std::size_t y=0;y<mazeHeight;y++)
+            {
+                switch (mazeData[(y)*mazeWidth+x])
                 {
-                    for(std::size_t y=0;y<mazeHeight;y++)
-                    {
-                        switch (maze[(y)*mazeWidth+x])
-                        {
-                            case Tile::Empty:
-                                Pokitto::Display::setColor(0);
-                                Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1); //bug in fillRectangle, so spriteHeight-1 instead of spriteHeight
-                                break;
-                                break;
-                            case Tile::Wall:
-                                Pokitto::Display::setColor(2);
-                                Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1);
-                                break;
-                            case Tile::Pill:
-                                Pokitto::Display::setColor(1);
-                                //Pokitto::Display::fillCircle(8*x+3,8*y+3,1);
-                                Pokitto::Display::fillRectangle(x*spriteWidth+3,y*spriteHeight+3,2,1);
-                                break;
-                            case Tile::PowerPill:
-                                Pokitto::Display::setColor(1);
-                                Pokitto::Display::fillCircle(spriteWidth*x+3,spriteHeight*y+3,2);
-                                break;
-                        }
-                    }
+                    case Tile::Empty:
+                        Pokitto::Display::setColor(0);
+                        Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1); //bug in fillRectangle, so spriteHeight-1 instead of spriteHeight
+                        break;
+                    case Tile::Wall:
+                        Pokitto::Display::setColor(2);
+                        Pokitto::Display::fillRectangle(x*spriteWidth,y*spriteHeight,spriteWidth,spriteHeight-1);
+                        break;
+                    case Tile::Pill:
+                        Pokitto::Display::setColor(1);
+                        //Pokitto::Display::fillCircle(8*x+3,8*y+3,1);
+                        Pokitto::Display::fillRectangle(x*spriteWidth+3,y*spriteHeight+3,2,1);
+                        break;
+                    case Tile::PowerPill:
+                        Pokitto::Display::setColor(1);
+                        Pokitto::Display::fillCircle(spriteWidth*x+3,spriteHeight*y+3,2);
+                        break;
                 }
+            }
+        }*/
+        drawMaze();
+        Pokitto::Display::setColor(1);
+        Pokitto::Display::setCursor(168,48);
+        Pokitto::Display::print((int)maze.totalPillsRemaining);
+        Pokitto::Display::update(false,168,48,16,8);
         if (updateScreen)
         {
             Pokitto::Sound::pauseMusicStream();
             Pokitto::Display::update();
-        updateScreen=false;
-        for(uint8_t i=entities.size()-1;i<entities.size();i++)
-        {
-            //entities[i].makeVisible(Vector2{(i-6)*16,16});
-            entities[i].makeVisible(Vector2{7*8,17*8});
-        }
+            updateScreen=false;
+            for(uint8_t i=entities.size()-1;i<entities.size();i++)
+            {
+                //entities[i].makeVisible(Vector2{(i-6)*16,16});
+                entities[i].makeVisible(Vector2{7*8,17*8});
+            }
         }
 
         updateState();
         renderState();
-
+        if (maze.totalPillsRemaining==0)
+        {
+            gamestate = GameState::TitleScreen;
+        }
     }
     void run()
     {

@@ -1,8 +1,25 @@
 #pragma once
+/*
+Copyright 2018 sbmrgd
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+*/
 
 #include "Pokitto.h"
 #include "EntityController.h"
 #include "entity.h"
+#include "Grid.h"
 
 class KeyboardController : public EntityController
 {
@@ -13,44 +30,40 @@ public:
     {
 
     }
-	virtual void update(Entity & entity)
+	virtual void update(Entity & entity, Grid & grid)
 	{
-	    //if(Pokitto::Buttons::pressed(BTN_UP))
-        if(Pokitto::Buttons::upBtn())
-        {   //if ((maze[(entity.position.y/8-1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8-1)*21+((entity.position.x+7)/8)]!=1))
-            if ((maze[(entity.position.y/8-1)*21+(entity.position.x/8)]!=Tile::Wall) && (maze[(entity.position.y/8-1)*21+((entity.position.x+7)/8)]!=Tile::Wall))
+	    if(Pokitto::Buttons::upBtn())
+        {
+            if ((grid.getItem(entity.position.x/8,entity.position.y/8-1)!=Tile::Wall) && (grid.getItem((entity.position.x+7)/8,entity.position.y/8-1)!=Tile::Wall))
             {
-                entity.movement =Vector2{0,-1};
+                entity.movement = Vector2{0, -1};
             }
 
         }
-        //if(Pokitto::Buttons::pressed(BTN_DOWN))
+
         if(Pokitto::Buttons::downBtn())
         {
-            //if ((maze[(entity.position.y/8+1)*21+(entity.position.x/8)]!=1) && (maze[(entity.position.y/8+1)*21+((entity.position.x+7)/8)]!=1))
-            if ((maze[(entity.position.y/8+1)*21+(entity.position.x/8)]!=Tile::Wall) && (maze[(entity.position.y/8+1)*21+((entity.position.x+7)/8)]!=Tile::Wall))
+            if ((grid.getItem(entity.position.x/8,entity.position.y/8+1)!=Tile::Wall) && (grid.getItem((entity.position.x+7)/8,entity.position.y/8+1)!=Tile::Wall))
             {
-                entity.movement =Vector2{0,1};
+                entity.movement = Vector2{0, 1};
             }
 
         }
-        //if(Pokitto::Buttons::pressed(BTN_LEFT))
+
         if(Pokitto::Buttons::leftBtn())
         {
-            //if ((maze[(entity.position.y/8)*21+(entity.position.x/8-1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8-1)]!=1))
-            if ((maze[(entity.position.y/8)*21+(entity.position.x/8-1)]!=Tile::Wall) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8-1)]!=Tile::Wall))
+            if ((grid.getItem(entity.position.x/8-1,entity.position.y/8)!=Tile::Wall) && (grid.getItem(entity.position.x/8-1,(entity.position.y+7)/8)!=Tile::Wall))
             {
-                entity.movement =Vector2{-1,0};
+                entity.movement = Vector2{-1, 0};
             }
 
         }
-        //if(Pokitto::Buttons::pressed(BTN_RIGHT))
+
         if(Pokitto::Buttons::rightBtn())
         {
-            //if ((maze[(entity.position.y/8)*21+(entity.position.x/8+1)]!=1) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8+1)]!=1))
-            if ((maze[(entity.position.y/8)*21+(entity.position.x/8+1)]!=Tile::Wall) && (maze[((entity.position.y+7)/8)*21+(entity.position.x/8+1)]!=Tile::Wall))
+            if ((grid.getItem(entity.position.x/8+1,entity.position.y/8)!=Tile::Wall) && (grid.getItem(entity.position.x/8+1,(entity.position.y+7)/8)!=Tile::Wall))
             {
-                entity.movement =Vector2{1,0};
+                entity.movement = Vector2{1, 0};
             }
         }
 	};

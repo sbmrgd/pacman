@@ -2,6 +2,7 @@
 
 // Predeclaring Entity so EntityController knows it exists
 class Entity;
+class Grid;
 
 class EntityController
 {
@@ -14,5 +15,5 @@ public:
 	virtual void update(void) = 0;
 	// Pure virtual function -
 	// inheriting classes must implement this or they won't compile
-	virtual void update(Entity & entity) = 0;
+	virtual void update(Entity & entity, Grid & grid) = 0;
 };

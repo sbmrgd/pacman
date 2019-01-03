@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 
 // Game palette
@@ -1273,7 +1274,7 @@ enum class Tile
 	Pill = 2,
 	PowerPill = 3,
 };
-Tile maze[21*21] {
+Tile mazeData[21*21] {
 Tile::Empty, Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Wall, Tile::Wall,  Tile::Wall,  Tile::Wall,      Tile::Wall,  Tile::Empty,
 Tile::Empty, Tile::Wall,  Tile::Pill,      Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill,  Tile::Pill, Tile::Pill,  Tile::Pill,  Tile::Pill,      Tile::Wall,  Tile::Empty,
 Tile::Empty, Tile::Wall,  Tile::PowerPill, Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Pill,  Tile::Wall,  Tile::Wall,  Tile::Wall,  Tile::Pill, Tile::Wall,  Tile::Wall,  Tile::PowerPill, Tile::Wall,  Tile::Empty,

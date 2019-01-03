@@ -3,6 +3,7 @@
 #include "Pokitto.h"
 #include "EntityController.h"
 #include "entity.h"
+#include "Grid.h"
 
 class LetterController : public EntityController
 {
@@ -28,7 +29,7 @@ public:
         }
         else elapsed = false;
     }
-	void update(Entity & entity)
+	void update(Entity & entity, Grid & grid)
 	{
 	    if(elapsed)
         {
