@@ -21,12 +21,13 @@ Copyright 2018 sbmrgd
 #include "entity.h"
 #include "Grid.h"
 
-class KeyboardController : public EntityController
+class AIController1 : public EntityController
 {
 private:
     uint32_t time1 = Pokitto::Core::getTime();
+    uint8_t counter = 8;
 public:
-	virtual ~KeyboardController(void) {}
+	virtual ~AIController1(void) {}
 
     virtual void update(void)
     {
@@ -35,48 +36,37 @@ public:
 
 	virtual void update(Entity & entity, Grid & grid)
 	{
-	    if(Pokitto::Buttons::upBtn())
+	    if (counter==0)
         {
-            if ((grid.getItem(entity.position.x/8,entity.position.y/8-1)!=Tile::Wall) && (grid.getItem((entity.position.x+7)/8,entity.position.y/8-1)!=Tile::Wall))
-            {
-                entity.movement = Vector2{0, -1};
-            }
-        }
-
-        if(Pokitto::Buttons::downBtn())
-        {
-            if ((grid.getItem(entity.position.x/8,entity.position.y/8+1)!=Tile::Wall) && (grid.getItem((entity.position.x+7)/8,entity.position.y/8+1)!=Tile::Wall))
-            {
-                entity.movement = Vector2{0, 1};
-            }
-        }
-
-        if(Pokitto::Buttons::leftBtn())
-        {
-            if ((grid.getItem(entity.position.x/8-1,entity.position.y/8)!=Tile::Wall) && (grid.getItem(entity.position.x/8-1,(entity.position.y+7)/8)!=Tile::Wall))
-            {
-                entity.movement = Vector2{-1, 0};
-            }
-        }
-
-        if(Pokitto::Buttons::rightBtn())
-        {
-            if ((grid.getItem(entity.position.x/8+1,entity.position.y/8)!=Tile::Wall) && (grid.getItem(entity.position.x/8+1,(entity.position.y+7)/8)!=Tile::Wall))
-            {
-                entity.movement = Vector2{1, 0};
-            }
+            counter = 8;
+	    uint8_t randomNumber = rand() % 4;
+	    switch (randomNumber)
+	    {
+        case 0:
+            entity.movement = Vector2{0, -1};
+            break;
+        case 1:
+            entity.movement = Vector2{0, 1};
+            break;
+        case 2:
+            entity.movement = Vector2{-1, 0};
+            break;
+        case 3:
+            entity.movement = Vector2{1, 0};
+            break;
+	    }
         }
 
         if((Pokitto::Core::getTime()-time1)>entity.update_time)
-        {
+        {   counter--;
             time1 = Pokitto::Core::getTime();
             if (((entity.position.x%spriteWidth)==0) && ((entity.position.y%spriteHeight)==0))
                 {
-                    if (grid.getItem((entity.position.x/spriteWidth),(entity.position.y/spriteHeight))>Tile::Wall)
+                    /*if (grid.getItem((entity.position.x/spriteWidth),(entity.position.y/spriteHeight))>Tile::Wall)
                     {
                         grid.getItem((entity.position.x/spriteWidth),(entity.position.y/spriteHeight))=Tile::Empty;
                         grid.totalPillsRemaining--;
-                    }
+                    }*/
                     if (grid.getItem((entity.position.x/spriteWidth+entity.movement.x+mazeWidth)%mazeWidth,(entity.position.y/spriteHeight+entity.movement.y))!=Tile::Wall)
                     {
                         if (entity.position.x/spriteWidth==(mazeWidth-1)) entity.position.x=0;
@@ -92,3 +82,4 @@ public:
 	};
 
 };
+

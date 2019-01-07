@@ -23,6 +23,7 @@ Copyright 2018 sbmrgd
 #include "Vector2.h"
 #include "KeyboardController.h"
 #include "LetterControllers.h"
+#include "AIController1.h"
 #include "StaticRenderer.h"
 #include "AnimatedRenderer.h"
 #include "DirectionalRenderer.h"
@@ -40,8 +41,16 @@ class Game
 private:
     GameState gamestate;
     KeyboardController keyboardController;
-    LetterController letterControllerEven{-4};
-    LetterController letterControllerOdd{4};
+    AIController1 blinkyController;
+    AIController1 inkyController;
+    AIController1 clydeController;
+    AIController1 pinkyController;
+    LetterController letterControllerP{4};
+    LetterController letterControllerA{-3};
+    LetterController letterControllerC{2};
+    LetterController letterControllerM{-2};
+    LetterController letterControllerA2{3};
+    LetterController letterControllerN{-4};
     StaticRenderer letterRenderer;
     AnimatedRenderer ghostRenderer;
     DirectionalRenderer pacmanRenderer;
@@ -135,9 +144,17 @@ public:
         Pokitto::Display::loadRGBPalette(Game_pal);
 
         //Initialize Controllers
-        controllers.push_back(&letterControllerEven);
-        controllers.push_back(&letterControllerOdd);
+        controllers.push_back(&letterControllerP);
+        controllers.push_back(&letterControllerA);
+        controllers.push_back(&letterControllerC);
+        controllers.push_back(&letterControllerM);
+        controllers.push_back(&letterControllerA2);
+        controllers.push_back(&letterControllerN);
         controllers.push_back(&keyboardController);
+        controllers.push_back(&blinkyController);
+        controllers.push_back(&inkyController);
+        controllers.push_back(&clydeController);
+        controllers.push_back(&pinkyController);
 
         //Initialize Renderers
         renderers.push_back(&letterRenderer);
@@ -145,21 +162,21 @@ public:
         renderers.push_back(&pacmanRenderer);
 
         //Initialize Entities
-        entities.emplace_back(0, letters_pal,letters[0],(int16_t)(Pokitto::Display::getWidth()/2-3*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven, letterRenderer);
-        entities.emplace_back(1, letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2-2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd, letterRenderer);
-        entities.emplace_back(2, letters_pal,letters[2],(int16_t)(Pokitto::Display::getWidth()/2-1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven, letterRenderer);
-        entities.emplace_back(3, letters_pal,letters[3],(int16_t)(Pokitto::Display::getWidth()/2-0*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd, letterRenderer);
-        entities.emplace_back(4, letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2+1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerEven, letterRenderer);
-        entities.emplace_back(5, letters_pal,letters[4],(int16_t)(Pokitto::Display::getWidth()/2+2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerOdd, letterRenderer);
+        entities.emplace_back(0, letters_pal,letters[0],(int16_t)(Pokitto::Display::getWidth()/2-3*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerP, letterRenderer);
+        entities.emplace_back(1, letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2-2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerA, letterRenderer);
+        entities.emplace_back(2, letters_pal,letters[2],(int16_t)(Pokitto::Display::getWidth()/2-1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerC, letterRenderer);
+        entities.emplace_back(3, letters_pal,letters[3],(int16_t)(Pokitto::Display::getWidth()/2-0*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerM, letterRenderer);
+        entities.emplace_back(4, letters_pal,letters[1],(int16_t)(Pokitto::Display::getWidth()/2+1*18),(int16_t)(Pokitto::Display::getHeight()/2-32+2),0,0,400, letterControllerA2, letterRenderer);
+        entities.emplace_back(5, letters_pal,letters[4],(int16_t)(Pokitto::Display::getWidth()/2+2*18),(int16_t)(Pokitto::Display::getHeight()/2-32-2),0,0,400, letterControllerN, letterRenderer);
         /*entities.emplace_back(ghost_blinky_pal,ghost[0],5,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_inky_pal,ghost[0],21,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_clyde_pal,ghost[0],37,5,1,0,20, keyboardController, ghostRenderer);
         entities.emplace_back(ghost_pinky_pal,ghost[0],53,5,1,0,20, keyboardController, ghostRenderer);*/
         //entities.emplace_back(pacman_pal,pacman_sprite[0],20,20,1,0,20, keyboardController, pacmanRenderer);
-        entities.emplace_back(6, ghost_blinky_pal,ghost_small[0],4,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(7, ghost_inky_pal,ghost_small[0],12,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(8, ghost_clyde_pal,ghost_small[0],20,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
-        entities.emplace_back(9, ghost_pinky_pal,ghost_small[0],28,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, ghostRenderer);
+        entities.emplace_back(6, ghost_blinky_pal,ghost_small[0],4,(int16_t)(Pokitto::Display::getHeight()/2)+1,0,0,20, blinkyController, ghostRenderer);
+        entities.emplace_back(7, ghost_inky_pal,ghost_small[0],12,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, inkyController, ghostRenderer);
+        entities.emplace_back(8, ghost_clyde_pal,ghost_small[0],20,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, clydeController, ghostRenderer);
+        entities.emplace_back(9, ghost_pinky_pal,ghost_small[0],28,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, pinkyController, ghostRenderer);
         entities.emplace_back(10, pacman_pal,pacman_small2[0],36,(int16_t)(Pokitto::Display::getHeight()/2)+1,1,0,20, keyboardController, pacmanRenderer);
 
         updateScreen = true;
@@ -261,12 +278,21 @@ public:
         Pokitto::Display::setColor(1);
         Pokitto::Display::setCursor(168,48);
         Pokitto::Display::print((int)maze.totalPillsRemaining);
-        Pokitto::Display::update(false,168,48,16,8);
+        //Pokitto::Display::update(false,168,48,16,8);
         if (updateScreen)
         {
             Pokitto::Sound::pauseMusicStream();
             Pokitto::Display::update();
             updateScreen=false;
+            entities[6].makeVisible(Vector2{10*8,8*8});
+            entities[6].movement = Vector2{0,0};
+            //entities[6].palette = ghost_inv2_pal;
+            entities[7].makeVisible(Vector2{9*8,9*8});
+            entities[7].movement = Vector2{0,0};
+            entities[8].makeVisible(Vector2{10*8,9*8});
+            entities[8].movement = Vector2{0,0};
+            entities[9].makeVisible(Vector2{11*8,9*8});
+            entities[9].movement = Vector2{0,0};
             for(uint8_t i=entities.size()-1;i<entities.size();i++)
             {
                 //entities[i].makeVisible(Vector2{(i-6)*16,16});

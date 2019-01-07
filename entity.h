@@ -91,7 +91,7 @@ public:
                 //this->position+=movement;
 
 
-                if (((this->position.x%spriteWidth)==0) && ((this->position.y%spriteHeight)==0))
+                /*if (((this->position.x%spriteWidth)==0) && ((this->position.y%spriteHeight)==0))
                 {
                         //if (maze[(this->position.y/8)*mazeHeight+(this->position.x/8)]>1)
                         //if (mazeData[(this->position.y/spriteHeight)*mazeHeight+(this->position.x/spriteWidth)]>Tile::Wall)
@@ -114,18 +114,18 @@ public:
                 else
                 {
                     this->position+=movement;
-                }
+                }*/
 
             }
 
-            if (this->position.x<0)
+            /*if (this->position.x<0)
                 this->position.x=0;
             if (this->position.x>Pokitto::Display::getWidth()-bitmap[0])
                 this->position.x=Pokitto::Display::getWidth()-bitmap[0];
             if (this->position.y<0)
                 this->position.y=0;
             if (this->position.y>Pokitto::Display::getHeight()-bitmap[1])
-                this->position.y=Pokitto::Display::getHeight()-bitmap[1];
+                this->position.y=Pokitto::Display::getHeight()-bitmap[1];*/
         }
 	}
 
@@ -140,6 +140,7 @@ public:
         }
         else
         {
+            //Move the entity off screen
             Pokitto::Display::setSpritePos(this->index, Pokitto::Display::getWidth(), Pokitto::Display::getHeight());
         }
 	}

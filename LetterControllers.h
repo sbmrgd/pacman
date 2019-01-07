@@ -17,24 +17,35 @@ public:
     LetterController (int16_t y_adjustment) : y_adjustment(y_adjustment)
     {
     }
+
 	virtual ~LetterController(void) {}
 
     void update(void)
     {
-        if((Pokitto::Core::getTime()-time1)>400)
+        /*if((Pokitto::Core::getTime()-time1)>400)
         {
             time1 = Pokitto::Core::getTime();
             y_adjustment *= -1;
             elapsed = true;
         }
-        else elapsed = false;
+        else elapsed = false;*/
     }
 	void update(Entity & entity, Grid & grid)
 	{
-	    if(elapsed)
+	    if((Pokitto::Core::getTime()-time1)>entity.update_time)
+	    //if(elapsed)
         {
+            time1 = Pokitto::Core::getTime();
+            y_adjustment *= -1;
             entity.movement.y = y_adjustment;
+            entity.position += entity.movement;
         }
+        else
+        {
+            entity.movement.y = 0;
+        }
+        //entity.movement.y = y_adjustment;
+        entity.position += entity.movement;
 	};
 
 };
