@@ -74,6 +74,7 @@ public:
                 {
                     if (grid.getItem((entity.position.x/spriteWidth),(entity.position.y/spriteHeight))>Tile::Wall)
                     {
+                        if (grid.getItem((entity.position.x/spriteWidth),(entity.position.y/spriteHeight))==Tile::PowerPill) grid.setPowerState(20000);
                         grid.getItem((entity.position.x/spriteWidth),(entity.position.y/spriteHeight))=Tile::Empty;
                         grid.totalPillsRemaining--;
                     }
