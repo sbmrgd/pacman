@@ -67,12 +67,12 @@ public:
             //entity.bitmap = entity.bitmap0 +getDirection(entity)*4*18 + bitmapnr*18;
             entity.bitmap = entity.bitmap0 + (getDirection(entity) * 4 + bitmapnr) * (2+spriteWidth*spriteHeight*spriteBitMode/8); // Each sprite bitmap consists of (2 + spriteWidth * spriteHeight / spriteBitMode / 8 uint8_t values
             //entity.changedBitmap = true;
-            Pokitto::Display::setSpriteBitmap(entity.index, entity.bitmap, entity.palette, entity.position.x, entity.position.y);
+            Pokitto::Display::setSpriteBitmap(entity.index, entity.bitmap, entity.palette, entity.position.x+1, entity.position.y+1);
         }
         else
         {
             //entity.changedBitmap = false;
-            Pokitto::Display::setSpritePos(entity.index, entity.position.x, entity.position.y);
+            Pokitto::Display::setSpritePos(entity.index, entity.position.x+1, entity.position.y+1);
         }
 	}
 };

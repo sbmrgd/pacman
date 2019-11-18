@@ -80,8 +80,8 @@ public:
                     }
                     if (grid.getItem((entity.position.x/spriteWidth+entity.movement.x+mazeWidth)%mazeWidth,(entity.position.y/spriteHeight+entity.movement.y))!=Tile::Wall)
                     {
-                        if (entity.position.x/spriteWidth==(mazeWidth-1)) entity.position.x=0;
-                        else if (entity.position.x==0) entity.position.x=(mazeWidth-1)*spriteWidth;
+                        if (entity.position.x/spriteWidth>=(mazeWidth-1)) entity.position.x=0;
+                        else if (entity.position.x<=0) entity.position.x=(mazeWidth-1)*spriteWidth;
                         entity.position+=entity.movement;
                     }
                 }

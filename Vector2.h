@@ -38,4 +38,9 @@ public:
         this->y -=vector2.y;
         return *this;
     }
+
+    bool operator==(const Vector2 vector2)
+    {
+        return (this->x == vector2.x) && (this->y == vector2.y);
+    }
 };

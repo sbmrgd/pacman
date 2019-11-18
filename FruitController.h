@@ -1,6 +1,7 @@
+
 #pragma once
 /*
-Copyright 2018 sbmrgd
+Copyright 2019 sbmrgd
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,20 +18,26 @@ Copyright 2018 sbmrgd
 */
 
 #include "Pokitto.h"
-#include "EntityRenderer.h"
+#include "EntityController.h"
 #include "entity.h"
+#include "Grid.h"
 
-class StaticRenderer : public EntityRenderer
+class FruitController : public EntityController
 {
 
 public:
-	virtual ~StaticRenderer(void) {}
+	virtual ~FruitController(void) {}
 
-	// Pure virtual function -
-	// inheriting classes must implement this or they won't compile
-	virtual void render(Entity & entity)
+    virtual void update(void)
+    {
+
+    }
+
+	virtual void update(Entity & entity, Grid & grid)
 	{
-        Pokitto::Display::setSpritePos(entity.index, entity.position.x+1, entity.position.y+1);
-	}
+
+
+	};
+
 };
 

@@ -36,29 +36,38 @@ public:
 
 	virtual void update(Entity & entity, Grid & grid)
 	{
-	    if (counter==0)
+	    if((Pokitto::Core::getTime()-time1)>entity.update_time)
         {
-            counter = 8;
-	    uint8_t randomNumber = rand() % 4;
-	    switch (randomNumber)
-	    {
-        case 0:
-            entity.movement = Vector2{0, -1};
-            break;
-        case 1:
-            entity.movement = Vector2{0, 1};
-            break;
-        case 2:
-            entity.movement = Vector2{-1, 0};
-            break;
-        case 3:
-            entity.movement = Vector2{1, 0};
-            break;
-	    }
-        }
+            if (counter==0)
+            {
+                counter = 8;
+                uint8_t randomNumber = rand() % 4;
+                Vector2 newMovement;
+                switch (randomNumber)
+                {
+                case 0:
+                    newMovement = Vector2{0, -1};
+                    break;
+                case 1:
+                    newMovement = Vector2{0, 1};
+                    break;
+                case 2:
+                    newMovement = Vector2{-1, 0};
+                    break;
+                case 3:
+                    newMovement = Vector2{1, 0};
+                    break;
+                }
+                if ((grid.getItem(entity.position.x/8,entity.position.y/8 + newMovement.y)!=Tile::Wall) && (grid.getItem((entity.position.x+7)/8,entity.position.y/8 + newMovement.y)!=Tile::Wall)
+                    && (grid.getItem(entity.position.x/8 + newMovement.x,entity.position.y/8)!=Tile::Wall) && (grid.getItem(entity.position.x/8 + newMovement.x,(entity.position.y+7)/8)!=Tile::Wall))
+                {
+                    entity.movement = newMovement;
+                }
+            }
 
-        if((Pokitto::Core::getTime()-time1)>entity.update_time)
-        {   counter--;
+       // if((Pokitto::Core::getTime()-time1)>entity.update_time)
+       // {
+            counter--;
             time1 = Pokitto::Core::getTime();
             if (((entity.position.x%spriteWidth)==0) && ((entity.position.y%spriteHeight)==0))
                 {
@@ -69,15 +78,15 @@ public:
                     }*/
                     if (grid.getItem((entity.position.x/spriteWidth+entity.movement.x+mazeWidth)%mazeWidth,(entity.position.y/spriteHeight+entity.movement.y))!=Tile::Wall)
                     {
-                        if (entity.position.x/spriteWidth==(mazeWidth-1)) entity.position.x=0;
-                        else if (entity.position.x==0) entity.position.x=(mazeWidth-1)*spriteWidth;
+                        if (entity.position.x/spriteWidth>=(mazeWidth-1)) entity.position.x=0;
+                        else if (entity.position.x<=0) entity.position.x=(mazeWidth-1)*spriteWidth;
                         entity.position+=entity.movement;
                     }
                 }
-                else
-                {
-                    entity.position+=entity.movement;
-                }
+            else
+            {
+                entity.position+=entity.movement;
+            }
         }
 	};
 
